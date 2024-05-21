@@ -4,7 +4,7 @@
     <title>Tela de Conteúdo</title>
 </head>
 <body>
-    <h1>Bem-vindo, <?php echo $_COOKIE["user"]; ?>!</h1>
+    <h1>Bem-vindo, Zollo !</h1>
     <p>Dama do Lago 
 
 Eis-me a caminhar no céu noturno <br> 
