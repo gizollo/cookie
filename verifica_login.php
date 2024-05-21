@@ -1,16 +1,16 @@
 <?php
-
+//código não finalizado
 $email = $_POST['email'];
 $senha = $_POST['senha'];
 
 $conn = mysqli_connect("localhost", "username", "senha", "database_name");
 
-// tentativa de conexão foi estabelecida com sucesso
+// tentativa de conexão com sucesso
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Consulta no banco de dados para verificar se o usuário existe
+// Consulta no banco de dados 
 $query = "SELECT * FROM usuarios WHERE email = '$email' AND senha = '$senha'";
 $result = mysqli_query($conn, $query);
 
