@@ -1,3 +1,4 @@
+<!-- Código não finalizado -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,7 @@
         <label for="email">Email:giovanni@zollo</label>
         <input type="email" name="email" required><br>
         <label for="senha">Senha:senha123</label>
-        <input type="password" name="senha" required><br>
+        <input type="senha" name="senha" required><br>
         <button type="submit">Enviar</button>
     </form>
 </body>
