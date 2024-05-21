@@ -3,31 +3,50 @@
 $email = $_POST['email'];
 $senha = $_POST['senha'];
 
-$conn = mysqli_connect("localhost", "username", "senha", "database_name");
 
-// tentativa de conexão com sucesso
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+
+// Conexão com o banco de dados
+$conn = new mysqli("localhost", "usuario", "senha", "database_name");
+
+$usuario = "zollo";
+$senha = "senha123";
+
+// Verificação de conexão
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Consulta no banco de dados 
-$query = "SELECT * FROM usuarios WHERE email = '$email' AND senha = '$senha'";
-$result = mysqli_query($conn, $query);
+// Consulta no banco de dados
+$query = "SELECT * FROM usuarios WHERE email = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
 // Se o usuário existir, cria uma sessão e um cookie
-if (mysqli_num_rows($result) > 0) {
-    $user = mysqli_fetch_assoc($result);
+if ($result->num_rows > 0) {
+    $usuario = $result->fetch_assoc();
     session_start();
+
+    // Verifica a senha fornecida com a senha armazenada no banco de dados
+    if (password_verify($senha, $usuario['senha'])) {
+        setcookie("usuario", $usuario['nome'], time() + (86400 * 7), "/"); // 86400 s = 1 dia por 7 dias
+
+        // Armazena os dados do usuário em uma variável de sessão
+        $_SESSION['usuario'] = $usuario;
+
     
-    setcookie("user", $user['nome'], time() + (86400 * 7), "/"); // 86400 segundos = 1 dia por 7 dias 
-    // Armazena os dados do usuário em uma variável de sessão
-    $_SESSION['user'] = $user;
-    // Redireciona o usuário para a tela de conteúdo
-    header("location: tela_conteudo.php");
+        header("location: tela_conteudo.php");
+    } else {
+        
+        header("location: tela_login.php?error=1");
+    }
 } else {
-    // Se o usuário não existir, redireciona de volta para a tela de login com um parâmetro de erro
+
     header("location: tela_login.php?error=1");
 }
+
+$conn->close();
 
 //sites que utilizam sistemas de login em PHP com sessões e cookies:
 
